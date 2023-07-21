@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #grid-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+    <!-- Aquí van las etiquetas meta, title, links a CSS, etc. -->
+</head>
+
+<body>
+    <div id="grid-container">
+        <!-- Aquí irá la tabla con los datos -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Empleado</th>
+                    <th>Device Description</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <!-- Aquí se agregarán las filas con JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- En este punto, el navegador ya ha cargado todo el contenido -->
+    <script src="main.js"></script>
+</body>
+
+</html>
