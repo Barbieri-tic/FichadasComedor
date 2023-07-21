@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const allData = [];
 
+        let largerRowCount = 0;
+
         timeCardsData.forEach((recordArray) => {
             recordArray.forEach((record) => {
                 allData.push(...record.data);
@@ -112,6 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${dataRecord.employee_name}</td>
                 <td>${dataRecord.device_description}</td>
             `;
+
+            if (largerRowCount < 5) {
+                row.classList.add("larger-row");
+                largerRowCount++; // Incrementar el contador
+            }
+
             tableBody.appendChild(row);
         });
     }
