@@ -72,10 +72,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function createGrid(timeCardsData) {
         console.log("Comedor Fichadas:", timeCardsData);
 
-        // Aquí puedes implementar la lógica para crear la grilla con los datos recibidos
-        // Por ejemplo, puedes usar una librería de visualización de datos como "ag-Grid" o "DataTables"
-        // y mostrar los datos en una tabla HTML.
-
         // Ejemplo de cómo crear una tabla HTML con los datos:
         const tableBody = document.getElementById("table-body");
         tableBody.innerHTML = "";
