@@ -162,6 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchTimeCardsData();
 
     // Actualizar los datos cada 5 segundos
-    setInterval(fetchTimeCardsData, 5000);
+    setInterval(fetchTimeCardsData, 1000);
 
 });
