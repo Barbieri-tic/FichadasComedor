@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const apiUrl = "https://api.pontomais.com.br/external_api/v1/reports/time_cards";
     const accessToken = "$2a$12$el1yTj9mFqRBu04InJXQdedZDhTaemudc.HmLRfR9YuiK4TO0qvIu";
 
+    let lastEmployeeName = null;
+    let totalRecords = 0; // Inicializar el contador de registros diferentes
+    let fetchingData = false; // Variable de bloqueo para evitar ejecuciones simultáneas
+
+
+
     // Función para obtener la fecha actual en formato "YYYY-MM-DD"
     function getCurrentDate() {
         const today = new Date();
@@ -26,6 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 format: "json"
             }
         };
+        // Verificar si ya se está ejecutando una llamada anterior
+        if (fetchingData) {
+            console.log("Esperando respuesta anterior...");
+            return;
+        }
+
+        // Activar la variable de bloqueo para evitar nuevas llamadas
+        fetchingData = true;
 
         try {
             const response = await fetch(apiUrl, {
@@ -51,6 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Datos recibidos:", responseData.data[0]);
 
             createGrid(responseData.data);
+            // Desactivar la variable de bloqueo después de procesar la respuesta
+            fetchingData = false;
         } catch (error) {
             console.error("Error al obtener los datos:", error);
 
@@ -65,12 +81,20 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (jsonError) {
                 console.error("Error al analizar la respuesta JSON:", jsonError);
             }
+            // Desactivar la variable de bloqueo en caso de error
+            fetchingData = false;
         }
     }
-
+    const totalRecordsDiv = document.getElementById("total-records");
     // Función para crear la grilla de fichadas
     function createGrid(timeCardsData) {
+        // Reiniciar el contador de registros
+        totalRecords = 0;
         console.log("Comedor Fichadas:", timeCardsData);
+
+        // Aquí puedes implementar la lógica para crear la grilla con los datos recibidos
+        // Por ejemplo, puedes usar una librería de visualización de datos como "ag-Grid" o "DataTables"
+        // y mostrar los datos en una tabla HTML.
 
         // Ejemplo de cómo crear una tabla HTML con los datos:
         const tableBody = document.getElementById("table-body");
@@ -97,6 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         filteredData.forEach((dataRecord) => {
+            const currentEmployeeName = dataRecord.employee_name;
+
             const row = document.createElement("tr");
 
             // Obtener la fecha en formato "dd/mm/yyyy" a partir de la cadena "Sex, 21/07/2023"
@@ -111,6 +137,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${dataRecord.device_description}</td>
             `;
 
+            // Verificar si el employee_name es diferente al último registrado
+            if (currentEmployeeName !== lastEmployeeName) {
+                totalRecords++
+            }
+
+            // Actualizar el lastEmployeeName
+            lastEmployeeName = currentEmployeeName;
+
             if (largerRowCount < 5) {
                 row.classList.add("larger-row");
                 largerRowCount++; // Incrementar el contador
@@ -118,6 +152,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             tableBody.appendChild(row);
         });
+
+
+        // Actualizar el div con el total de registros
+        totalRecordsDiv.textContent = `Total de fichadas: ${totalRecords}`;
     }
 
     // Obtener los datos al cargar la página 
@@ -125,4 +163,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Actualizar los datos cada 5 segundos
     setInterval(fetchTimeCardsData, 5000);
+
 });
