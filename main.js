@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Función para crear la grilla de fichadas
     function createGrid(timeCardsData) {
         // Reiniciar el contador de registros
-        //totalRecords = 0;
+        totalRecords = 0;
         console.log("Comedor Fichadas:", timeCardsData);
 
         // Aquí puedes implementar la lógica para crear la grilla con los datos recibidos
