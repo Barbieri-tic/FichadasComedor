@@ -63,7 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             console.log("Datos recibidos:", responseData.data[0]);
-
+            // Reiniciar el contador de registros
+            totalRecords = 0;
             createGrid(responseData.data);
             // Desactivar la variable de bloqueo después de procesar la respuesta
             fetchingData = false;
@@ -88,8 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalRecordsDiv = document.getElementById("total-records");
     // Función para crear la grilla de fichadas
     function createGrid(timeCardsData) {
-        // Reiniciar el contador de registros
-        totalRecords = 0;
+
+        //totalRecords = 0;
         console.log("Comedor Fichadas:", timeCardsData);
 
         // Aquí puedes implementar la lógica para crear la grilla con los datos recibidos
@@ -151,17 +152,42 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             tableBody.appendChild(row);
+
+            // Actualizar el div con el total de registros
+            totalRecordsDiv.textContent = `Total de fichadas: ${totalRecords}`;
         });
 
 
-        // Actualizar el div con el total de registros
-        totalRecordsDiv.textContent = `Total de fichadas: ${totalRecords}`;
+
     }
 
-    // Obtener los datos al cargar la página 
-    fetchTimeCardsData();
+    // Función para recargar la página como si se presionara F5
+    function reloadPage() {
+        location.reload(); // Recarga la página
+    }
 
-    // Actualizar los datos cada 5 segundos
+    // Función para verificar si es medianoche y programar la recarga
+    function scheduleReload() {
+        const now = new Date();
+        const midnight = new Date();
+        midnight.setHours(0, 0, 0, 0); // Establecer la hora a medianoche
+
+        // Calcular el tiempo restante hasta medianoche
+        let timeUntilMidnight = midnight.getTime() - now.getTime();
+
+        if (timeUntilMidnight <= 0) {
+            // Ya es medianoche, programa la recarga para el próximo día
+            midnight.setDate(midnight.getDate() + 1);
+            timeUntilMidnight = midnight.getTime() - now.getTime();
+        }
+
+        setTimeout(reloadPage, timeUntilMidnight); // Programar la recarga
+    }
+
+    // Verificar si es medianoche y programar la recarga al cargar la página
+    scheduleReload();
+
+    // En lugar de setInterval(fetchTimeCardsData, 1000); utiliza esta línea para actualizar cada 1 segundo:
     setInterval(fetchTimeCardsData, 1000);
 
 });
